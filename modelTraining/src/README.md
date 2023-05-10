@@ -28,7 +28,7 @@ Combine all the monthly CSV of PM2.5 data together and find all the PM ground ob
 Pre-required ground sensor location CSV file from the previous step. Match the ancillary data with sensor coordiantes using <code>ancillary_data_match.py</code>. The output is a CSV file of sensor location with ancillary data (without building footprint data). 
 
 ### Pre-process of building footprint dataset.
-Convert building footprint data from geojson to CSV and save state CSVs. Creating a CSV file of State boundary coordinates. The main python script for this is <code>main_building.py</code> and it is linked to <code>read_building.py</code> and <code>cal_building.py</code> scripts. 
+Convert building footprint data from geojson to CSV and save state CSVs. Creating a CSV file of State boundary coordinates. The main python script for this is <code>/Building_footprint/main_building.py</code> and it is linked to <code>read_building.py</code> and <code>cal_building.py</code> scripts. 
 
 ### Calculating building footprint information at the ground sensor locations.
 This required, building footprint data in each states from CSV format from the previous process and the State boundary coordinates CSV file. This also required ancillary data at senosr location CSV file. \
