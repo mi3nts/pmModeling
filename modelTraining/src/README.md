@@ -7,7 +7,7 @@ Soil Type (link is not available now): https://www.nrcs.usda.gov/wps/portal/nrcs
 Lithology: https://doi.pangaea.de/10.1594/PANGAEA.788537 \
 Elevation: https://www.gebco.net/data_and_products/gridded_bathymetry_data/ \
 Cropland: https://www.nass.usda.gov/Research_and_Science/Cropland/Release/index.php \
-Building Footprint: https://github.com/microsoft/USBuildingFootprints \
+Building Footprint: https://github.com/microsoft/USBuildingFootprints 
 
 ## step 2: EPA in-situ PM2.5 data downloading
-Historical PM2.5 data downloading using $\color{green}EPA_pm_down.py$. The outputs are monthly dataframes. 
+Historical PM2.5 data downloading using $\color{green}EPA\_pm\_down.py$. The outputs are monthly dataframes. 
