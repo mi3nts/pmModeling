@@ -10,4 +10,4 @@ Cropland: https://www.nass.usda.gov/Research_and_Science/Cropland/Release/index.
 Building Footprint: https://github.com/microsoft/USBuildingFootprints \
 
 ## step 2: EPA in-situ PM2.5 data downloading
-Historical PM2.5 data downloading using $\color{lightblue}Light Blue$. The outputs are monthly dataframes. 
+Historical PM2.5 data downloading using $\color{green}EPA_pm_down.py$. The outputs are monthly dataframes. 
