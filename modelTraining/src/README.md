@@ -14,3 +14,6 @@ Historical PM2.5 data downloading using <code>EPA_pm_down.py</code>. Set up the 
 
 ### step 3: MINTS's data downloading
 Historical MINTS data from all the Nodes can be downloaded using <code>/MINTS_scripts/pythonSyncher.py</code>. This required <code>mintsDefinitionsBirdCall.yaml</code> file to be in the same directory (which not included).
+
+- OpenAQ PM2.5, Meteorological data, AOD data downloading.
+Historical data 
