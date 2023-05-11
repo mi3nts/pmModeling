@@ -1,4 +1,4 @@
-## Model Training
+## Historical PM2.5 Estimation
 
 ### Making the US region reference coordinate dataframe with all the ancillary data.
 This process has three parts. \
