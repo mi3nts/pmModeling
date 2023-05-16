@@ -10,46 +10,54 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 from statsmodels.nonparametric.smoothers_lowess import lowess
 from sklearn.metrics import mean_squared_error
+from scipy.stats import gaussian_kde
+from matplotlib.gridspec import GridSpec
 
 
 
-df1 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2020_10.csv")
-df2 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2020_11.csv")
-df3 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2020_12.csv")
-df4 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2021_01.csv")
-df5 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2021_02.csv")
-df6 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2021_03.csv")
-df7 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2021_04.csv")
-df8 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2021_05.csv")
-df9 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2021_06.csv")
-df10 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2021_07.csv")
-df11 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2021_08.csv")
-df12 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2021_09.csv")
-df13 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2021_10.csv")
-df14 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2021_11.csv")
-df15 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2021_12.csv")
-df16 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2022_01.csv")
-df17 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2022_02.csv")
-df18 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2022_03.csv")
-df19 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2022_04.csv")
-df20 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2022_05.csv")
-df21 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2022_06.csv")
-df22 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2022_07.csv")
-df23 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2022_08.csv")
-df24 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2022_09.csv")
-df25 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df_with_PMsources/final_df_2022_10.csv")
+df1 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2020_10.csv")
+df2 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2020_11.csv")
+df3 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2020_12.csv")
+df4 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2021_01.csv")
+df5 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2021_02.csv")
+df6 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2021_03.csv")
+df7 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2021_04.csv")
+df8 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2021_05.csv")
+df9 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2021_06.csv")
+df10 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2021_07.csv")
+df11 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2021_08.csv")
+df12 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2021_09.csv")
+df13 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2021_10.csv")
+df14 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2021_11.csv")
+df15 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2021_12.csv")
+df16 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2022_01.csv")
+df17 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2022_02.csv")
+df18 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2022_03.csv")
+df19 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2022_04.csv")
+df20 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2022_05.csv")
+df21 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2022_06.csv")
+df22 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2022_07.csv")
+df23 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2022_08.csv")
+df24 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2022_09.csv")
+df25 = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/finalDF_PMsource_withDuplicates/new2_final_df_2022_10.csv")
 df = pd.concat([df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, df13, df14, df15, df16, df17, df18,
 df19, df20, df21, df22, df23, df24, df25])
+#df = df1
+
 
 df_epa = df[df['pm_source'] == 0]
 df_openAQ = df[df['pm_source'] == 1]
 df_mints = df[df['pm_source'] == 2]
-df = pd.concat([df_epa, df_mints, df_openAQ])
+df = pd.concat([df_epa, df_openAQ, df_mints])
+#df = df_epa
 #df.to_csv("/scratch/prabuddha/2yrHist_train/model_evaluation/only_EPA.csv")
 df = df.drop_duplicates(subset=["latitude", "longitude", "dateTime", "pm2_5"])
 
-Outdir = "/scratch/prabuddha/2yrHist_train/model_evaluation/fixRand_est100_"
-Outdir_model = "/scratch/prabuddha/2yrHist_train/ML_model/fixRand_est100_"
+
+
+Outdir = "/scratch/prabuddha/2yrHist_train/model_evaluation/fc_est200_r1_"
+#Outdir_model = "/scratch/prabuddha/2yrHist_train/ML_model/fc2_blh_est100_r1_"
+Outdir_model = "/scratch/prabuddha/pm_est_fc/model/fc_est200_r1_"
 
 #df = pd.read_csv("/scratch/prabuddha/2yrHist_train/monthlyDF/final_df/final_df_2020_10.csv")
 #df = df.rename(columns={'oldName1': 'newName1', 'oldName2': 'newName2'})
@@ -66,6 +74,8 @@ df = df[df['DQF'] < 2]
 # Add speed of the wind to the dataFrame
 df["uv10"]= np.sqrt(df["u_wind"].values*df["u_wind"].values +df["v_wind"].values*df["v_wind"].values)
 #print(list(df.columns))
+df['dateTime'] = pd.to_datetime(df['dateTime'])
+df['Month'] = df['dateTime'].dt.month
 
 df = df.rename(columns={'cropland':'Cropland', 'landcover':'Landcover', 'population_density':'Population density', 'soiltype':'Soil type',
         'lithology':'Lithology', 'elevation':'Elevation', 'num_building':'Number of building', 'avg_distance':'Avgerage building distance',
@@ -78,23 +88,41 @@ df = df.rename(columns={'cropland':'Cropland', 'landcover':'Landcover', 'populat
 
 
 # Split data for Training (80%) and Testing (20%)
-train, test = train_test_split(df, test_size=0.1, random_state=1)
+train, test = train_test_split(df, test_size=0.1, random_state=3)
 
-
+'''
 # All the input variables
-
 predictors_all = ['Cropland', 'Landcover', 'Population density', 'Soil type', 'Lithology', 'Elevation', 'Number of building', 'Avgerage building distance',
         'Total building area', 'Temperature', 'Dewpoint temperature', 'Wind U component', 'Wind V component', 'Pressure', 'Total precipitation',
         'Skin reservoir', 'Evaporation', 'Boundary layer height', 'Lake cover', 'Leaf area index - high vegetation', 'Leaf area index - low vegetation',
         'Snowfall', 'Solar radiation', 'Cloud cover', 'Relative humidity', 'Specific humidity', 'Rain content', 'AOD - Aerosol optical depth',
-        'DQF - AOD Data quality flags', 'Solar azimuth angle', 'Solar zenith angle', 'Wind speed']
+        'DQF - AOD Data quality flags', 'Solar azimuth angle', 'Solar zenith angle', 'Wind speed', 'Month']
+'''
+
+'''
+# all input variables - no wind components
+predictors_all = ['Cropland', 'Landcover', 'Population density', 'Soil type', 'Lithology', 'Elevation', 'Number of building', 'Avgerage building distance',
+        'Total building area', 'Temperature', 'Dewpoint temperature', 'Pressure', 'Total precipitation',
+        'Skin reservoir', 'Evaporation', 'Boundary layer height', 'Lake cover', 'Leaf area index - high vegetation', 'Leaf area index - low vegetation',
+        'Snowfall', 'Solar radiation', 'Cloud cover', 'Relative humidity', 'Specific humidity', 'Rain content', 'AOD - Aerosol optical depth',
+        'DQF - AOD Data quality flags', 'Solar azimuth angle', 'Solar zenith angle', 'Wind speed', 'Month']
+'''
 
 '''
 predictors_all = ['Cropland', 'Landcover', 'Population density', 'Soil type', 'Lithology', 'Elevation',
-        'Temperature', 'Dewpoint temperature', 'Wind U component', 'Wind V component', 'Pressure', 'Total precipitation',
+        'Temperature', 'Dewpoint temperature', 'Pressure', 'Total precipitation',
         'Skin reservoir', 'Evaporation', 'Boundary layer height', 'Leaf area index - high vegetation', 'Leaf area index - low vegetation',
-        'Relative humidity', 'AOD - Aerosol optical depth', 'DQF - AOD Data quality flags', 'Solar azimuth angle', 'Solar zenith angle', 'Wind speed']
+        'Relative humidity', 'AOD - Aerosol optical depth', 'DQF - AOD Data quality flags', 'Solar azimuth angle', 'Solar zenith angle', 'Wind speed', 'Month']
 '''
+
+
+#forecast
+predictors_all = ['Cropland', 'Landcover', 'Population density', 'Soil type', 'Lithology', 'Elevation', 'Number of building', 'Avgerage building distance',
+        'Total building area', 'Temperature', 'Pressure', 'Total precipitation', 'Boundary layer height',
+        'Relative humidity', 'Specific humidity', 'AOD - Aerosol optical depth',
+        'DQF - AOD Data quality flags', 'Solar azimuth angle', 'Solar zenith angle', 'Wind speed', 'Month']
+
+
 
 # Feature and label separation
 train_X = pd.DataFrame(train, columns = predictors_all)
@@ -104,7 +132,7 @@ test_Y = pd.DataFrame(test, columns = ['pm2_5'])
 
 
 # Train the model
-ETreg = ExtraTreesRegressor(n_estimators=100, random_state=1).fit(train_X, np.ravel(train_Y))
+ETreg = ExtraTreesRegressor(n_estimators=200, random_state=1).fit(train_X, np.ravel(train_Y))
 
 
 #Outdir = "model_evalu_4"
@@ -162,6 +190,71 @@ def residual_plot(predictionFile,outname):
         ax_histx.set_xlim(ax_scatter.get_xlim())
         plt.savefig(Outdir + outname +'_Residual.jpg', bbox_inches='tight', dpi=300)
         #plt.savefig(Outdir + '_Residual.jpg', bbox_inches='tight', dpi=300)
+
+
+def model_scatterplot_together(trainFile,testFile,outname):
+    rmse_train = mean_squared_error(trainFile['pm2_5'], trainFile['Predictions'],squared=False)
+    rmse_test = mean_squared_error(testFile['pm2_5'], testFile['Predictions'],squared=False)
+
+    rmse_train_ = round(rmse_train, 3)
+    rmse_test_ = round(rmse_test, 3)
+
+    R_train = trainFile['pm2_5'].corr(trainFile['Predictions'])
+    R_test = testFile['pm2_5'].corr(testFile['Predictions'])
+
+    R_train_ = round(R_train, 3)
+    R_test_ = round(R_test, 3)
+
+    x1 = trainFile['Predictions']
+    y1 = trainFile['pm2_5']
+
+    x2 = testFile['Predictions']
+    y2 = testFile['pm2_5']
+
+    #x1 = np.random.normal(0, 1, 100)
+    #y1 = np.random.normal(0, 1, 100)
+    #x2 = np.random.normal(2, 1, 100)
+    #y2 = np.random.normal(2, 1, 100)
+
+    fig = plt.figure(figsize=(8, 8))
+    gs = GridSpec(4, 4)
+    ax_main = fig.add_subplot(gs[1:4, 0:3])
+    ax_xhist = fig.add_subplot(gs[0, 0:3], sharex=ax_main)
+    ax_yhist = fig.add_subplot(gs[1:4, 3], sharey=ax_main)
+
+    #ax_main.scatter(x1, y1, color='blue', alpha=0.5)
+    s1 = ax_main.scatter(x2, y2, color='red', label='Testing', alpha=0.5, s=10)
+    s2 = ax_main.scatter(x1, y1, color='blue', label='Training', alpha=0.5, s=10)
+
+    x1_dens = np.linspace(x1.min(), x1.max(), 100)
+    y1_dens = np.linspace(y1.min(), y1.max(), 100)
+    x2_dens = np.linspace(x2.min(), x2.max(), 100)
+    y2_dens = np.linspace(y2.min(), y2.max(), 100)
+    #ax_xhist.plot(x1_dens, gaussian_kde(x1)(x1_dens), color='blue')
+    #ax_xhist.fill_between(x1_dens, gaussian_kde(x1)(x1_dens), alpha=0.5, color='blue')
+    ax_xhist.plot(x2_dens, gaussian_kde(x2)(x2_dens), color='red')
+    ax_xhist.fill_between(x2_dens, gaussian_kde(x2)(x2_dens), alpha=0.5, color='red')
+    ax_xhist.plot(x1_dens, gaussian_kde(x1)(x1_dens), color='blue')
+    ax_xhist.fill_between(x1_dens, gaussian_kde(x1)(x1_dens), alpha=0.5, color='blue')
+    #ax_yhist.plot(gaussian_kde(y1)(y1_dens), y1_dens, color='blue')
+    #ax_yhist.fill_betweenx(y1_dens, gaussian_kde(y1)(y1_dens), alpha=0.5, color='blue')
+    ax_yhist.plot(gaussian_kde(y2)(y2_dens), y2_dens, color='red')
+    ax_yhist.fill_betweenx(y2_dens, gaussian_kde(y2)(y2_dens), alpha=0.5, color='red')
+    ax_yhist.plot(gaussian_kde(y1)(y1_dens), y1_dens, color='blue')
+    ax_yhist.fill_betweenx(y1_dens, gaussian_kde(y1)(y1_dens), alpha=0.5, color='blue')
+
+    ax_main.set_xlabel('Fitted Values')
+    ax_main.set_ylabel('Observed Values')
+    ax_main.set_title('Train_RMSE = ' + str(rmse_train_) + ' Train_R = ' + str(R_train_) + ' Test_RMSE = ' + str(rmse_test_) + ' Test_R = ' + str(R_test_))
+    ax_xhist.set_ylabel('Density')
+    ax_yhist.set_xlabel('Density')
+
+    ax_main.legend(handles=[s1, s2], loc='upper right')
+
+    fig.tight_layout()
+
+    plt.savefig(Outdir + outname + '_scatter_plot_together.jpg', bbox_inches='tight',dpi=300)
+
 
 def model_scatterplot(predictionFile,outname):
         rmse = mean_squared_error(predictionFile['pm2_5'], predictionFile['Predictions'],squared=False)
@@ -256,11 +349,7 @@ model_scatterplot(predicted_train_valid,"ETreg_random_train")
 residual_plot(predicted_test_valid,"ETreg_random_test")
 model_scatterplot(predicted_test_valid,"ETreg_random_test")
 importance_plot(ETreg,predictors_all,outname="Importance_ETreg_random")
+model_scatterplot_together(predicted_train_valid, predicted_test_valid, "ETreg")
 
 #Outdir_model = "2y_model_4"
-joblib.dump(ETreg, Outdir_model + "ETreg_random.joblib")
-
-
-
-
-
+#joblib.dump(ETreg, Outdir_model + "ETreg_random.joblib")
