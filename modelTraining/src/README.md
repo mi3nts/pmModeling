@@ -41,6 +41,9 @@ Required ancillary data at ground sensor locations CSV file from the previous st
 ### Combine daily dataframes into monthly dataframes and add monthly PM dataframes.
 The daily CSV files are combined together and PM2.5 data CSV file combine with matched datetime using <code>combine_monthlyDF.py</code> script. The outputs are monthly CSV files with all the matched data with senosr locations.
 
+### Combine monthly dataframes and Optimize hyper-parameters.
+Using <code>hype_opt.py</code> script, combine all those monthly CSV files and split data into training and validation sets. Define the hyperparameters and use k-fold cross validation to avoid the over fitting. The output is print statement of best hyperparameters.
+
 ### Combine monthly dataframes and Train a model and evaluate it.
-Using <code>build_model.py</code> script, combine all those monthly CSV files and define two groups - historical and forecast - based on selected variables. Then it trains models for each groups and evaluate them. The outputs are the trained models and plots of evaluations.
+Using <code>build_model.py</code> script, combine all those monthly CSV files and define two groups - historical and forecast - based on selected variables. Then it trains models for each groups with best hyperparametes and evaluate them. The outputs are the trained models and plots of evaluations.
 
