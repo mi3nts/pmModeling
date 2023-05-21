@@ -19,13 +19,14 @@ import datetime
 # where the input dataframes saved.
 dfs_path = '/scratch/prabuddha/pm_est_fc/data/raw_df/'
 # trained model direction
-model_dir = "/scratch/prabuddha/pm_est_fc/model/new_ETreg_random.joblib"
+#model_dir = "/scratch/prabuddha/pm_est_fc/model/new_ETreg_random.joblib"
+model_dir = "/scratch/prabuddha/pm_est_fc/model/fc_est100_r1_ETreg_random.joblib"
 # where the US boundary shape folder
 USboundary_shape = '/scratch/prabuddha/pm_est/USBoundry/cb_2018_us_state_500k.shp'
 # saving location of output pm estimated dataframe
-output_df_dir = '/scratch/prabuddha/pm_est_fc/data/fc_df/'
+output_df_dir = '/scratch/prabuddha/pm_est_fc/data/fc_df/test2_'
 # saving location of output pm scatter map
-output_map = "/scratch/prabuddha/pm_est_fc/data/fc_plot/"
+output_map = "/scratch/prabuddha/pm_est_fc/data/fc_plot/test2_"
 
 
 
@@ -34,9 +35,9 @@ output_map = "/scratch/prabuddha/pm_est_fc/data/fc_plot/"
 #year, month, day, hour = week_ago_str[0:4], week_ago_str[5:7], week_ago_str[8:10], week_ago_str[11:13]
 #time = hour + ':00'
 #year = '2023'
-#month = '04'
-#day = '07'
-#hour = '23'
+#month = '05'
+#day = '17'
+#hour = '12'
 #time = hour + ':00'
 
 
@@ -71,7 +72,7 @@ else:
 
 predictors = ['Cropland', 'Landcover', 'Soil type', 'Lithology', 'Population density', 'Elevation','Number of building', 'Avgerage building distance', 'Total building area',
         'Temperature','Pressure','Total precipitation', 'Relative humidity', 'Specific humidity', 'AOD - Aerosol optical depth','DQF - AOD Data quality flags',
-        'Solar azimuth angle', 'Solar zenith angle', 'Wind speed']
+        'Solar azimuth angle', 'Solar zenith angle', 'Wind speed', 'Boundary layer height', 'Month']
 
 def make_prediction2(modelName, est_df):
         predictions_train = pd.DataFrame(modelName.predict(est_df),columns=["Predictions"])
@@ -110,10 +111,11 @@ def est():
     df = df.drop('Unnamed: 0', axis=1)
     df['DQF'] = df['DQF'].fillna(0)
     df["uv10"]= np.sqrt(df["u_wind"].values*df["u_wind"].values +df["v_wind"].values*df["v_wind"].values)
+    df['month'] = month
     df = df.rename(columns={'cropland':'Cropland', 'landcover':'Landcover', 'soil':'Soil type', 'lithology':'Lithology', 'population':'Population density', 'elevation':'Elevation',
         'num_build':'Number of building', 'avg_dist':'Avgerage building distance', 'tot_area':'Total building area', 'temperature':'Temperature','pressure':'Pressure',
         'precipitation':'Total precipitation', 'rel_humidity':'Relative humidity', 'spec_humidity':'Specific humidity', 'AOD':'AOD - Aerosol optical depth', 
-        'DQF':'DQF - AOD Data quality flags','SAA':'Solar azimuth angle', 'SZA':'Solar zenith angle', 'uv10':'Wind speed'})
+        'DQF':'DQF - AOD Data quality flags','SAA':'Solar azimuth angle', 'SZA':'Solar zenith angle', 'uv10':'Wind speed', 'pblh':'Boundary layer height', 'month':'Month'})
 
 
     df_noAOD = df[df['AOD - Aerosol optical depth'].isna()]
@@ -195,7 +197,7 @@ def est():
     ax = plt.subplot(projection=ccrs.PlateCarree())
     ax.add_feature(shape_feature,edgecolor='blue')
     ax.coastlines()
-    c = ax.scatter(final_df["longitude"], final_df["latitude"], c = final_df["pm_est"], s=15, cmap='turbo',vmin=0,vmax=15, marker='s', linewidth=0)
+    c = ax.scatter(final_df["longitude"], final_df["latitude"], c = final_df["pm_est"], s=15, cmap='turbo',vmin=0,vmax=35, marker='s', linewidth=0)
     fig.colorbar(c, ax=ax, shrink=0.55)
     plt.title("PM2.5 Estimation " + year + "-" + month + "-" + day + " " + time, fontsize=50)
     plt.savefig(output_map + "pm_est_" + year + "_" + month + "_" + day + "_" + hour + ".png")
